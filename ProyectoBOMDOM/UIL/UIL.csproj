@@ -106,12 +106,30 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Estilos\cssLogin.css" />
+    <Content Include="frmLogin.aspx" />
+    <Content Include="frmSudoku.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Javascript\jsLogin.js" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmLogin.aspx.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmLogin.aspx.designer.cs">
+      <DependentUpon>frmLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSudoku.aspx.cs">
+      <DependentUpon>frmSudoku.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSudoku.aspx.designer.cs">
+      <DependentUpon>frmSudoku.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -119,8 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Estilos\" />
-    <Folder Include="Javascript\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
