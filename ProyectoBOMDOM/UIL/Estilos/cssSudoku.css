@@ -1,0 +1,67 @@
+﻿/*Estilo del cuerpo de la página*/
+body {
+  background-color: white;
+  font-family: "Asap", sans-serif;
+}
+
+/*Estilo del título dentro del juego*/
+h1 { 
+    background:black;
+    color:white;
+    margin:0px 0px 2px 0px;
+    font-size:20px;
+    padding:2px 1px 5px 1px;
+    text-align:center;    
+}
+
+/*Menú desplegable*/
+.menuCSS3 ul {
+		display: flex;
+		padding: 0;
+		margin: 0;
+		list-style: none;        
+	}
+	.menuCSS3 a {
+		display: block;
+		padding: 1em;
+		background-color: #5F9EA0;
+		text-decoration: none;
+		color: #191C26;        
+	}
+	.menuCSS3 a:hover {
+		background-color: #CC673B;
+	}
+	.menuCSS3 ul li ul {
+		display: none;
+	}
+	.menuCSS3 ul li a:hover + ul, .menuCSS3 ul li ul:hover {
+		display: block;
+	}
+
+/*Tabla sobre la cual irá el sudoku*/
+.sudoku_board {
+    margin:6px auto;  
+    overflow: hidden;    
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;    
+    box-shadow: 0px 0px 5px 5px #bdc3c7;
+}
+
+.sudoku_board .cell {    
+    width:11.11%;    
+    display: inline-block;    
+    float:left;
+    cursor:pointer;    
+    text-align: center;
+    overflow: hidden;  
+    
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	    box-sizing: border-box;
+    
+    box-shadow: 0px 0px 0px 1px #bdc3c7;
+  
+    background:white;
+}
