@@ -195,7 +195,6 @@ Sudoku.prototype.dibujarBoard = function () {
 };
 
 Sudoku.prototype.resizeWindow = function () {
-    console.time("resizeWindow");
 
     var screen = { w: $(window).width(), h: $(window).height() };
 
@@ -277,7 +276,6 @@ Sudoku.prototype.run = function () {
 
 //Main
 $(function () {
-    console.time("Cargando tiempo...");
 
     //Inicio      
     $('head').append('<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />');
@@ -306,6 +304,4 @@ $(function () {
         partida.init().run();
         $('#menu_sudoku').removeClass('open-sidebar');
     });
-
-    console.timeEnd("Cargando tiempo...");
 });

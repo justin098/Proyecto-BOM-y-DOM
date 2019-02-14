@@ -58,7 +58,7 @@ h1 {
     overflow: hidden;  
     
     -webkit-box-sizing: border-box; /*Safari,Chrome*/
-	    -moz-box-sizing: border-box;    /*Firefox*/
+	    -moz-box-sizing: border-box;/*Firefox*/
 	    box-sizing: border-box;
     
     box-shadow: 0px 0px 0px 1px #bdc3c7;
@@ -99,9 +99,6 @@ h1 {
     color:white;
 }
 
-.sudoku_board .cell.selected.group {/*??*/
-    color:blue;    
-}
 
 .sudoku_board .cell span.samevalue, .sudoku_board .cell.fija span.samevalue {
     font-weight:bold;  
@@ -141,115 +138,6 @@ h1 {
 	    -moz-box-sizing: border-box;
 	    box-sizing: border-box;
 }
-
-.contenedor_gameover .gameover {
-    color:white;
-    font-weight:bold;
-	    text-align:center; 
-    
-    display:block;
-    position:absolute;       
-    width:90%;    
-    padding:10px;
-    
-    box-shadow: 0px 0px 5px 5px #bdc3c7;
-}
-
-
-.restart {
-  background:#7F8C8D;
-  color:#ecf0f1;
-}
-
-/* console */
-.contenedor_consola, .contenedor_gameover {
-    background-color: rgba(127, 140, 141, 0.7);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-     -webkit-user-select: none;  
-     -moz-user-select: none;    
-     -ms-user-select: none;      
-     user-select: none;
-}
-
-.board_console { /*Estilo de la consola*/
-    display:block;
-    position:absolute;        
-    width:50%;        
-    color:white;
-    background-color: rgba(127, 140, 141, 0.7);
-    box-shadow: 0px 0px 5px 5px #bdc3c7;
-}
-
-.board_console .num { /*Menú desplegable al seleccionar una celda*/
-    width:33.33%;    
-    color:#2c3e50;    
-    padding: 1px;
-    display: inline-block;    
-    font-weight:bold;
-    font-size:24px;
-    text-align: center;    
-    cursor:pointer;
-    
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-	    box-sizing: border-box;
-    
-    box-shadow: 0px 0px 0px 1px #bdc3c7;
-}
-
-
-.board_console .num:hover {
-    color:white;
-    background:#f1c40f;
-}
-
-.board_console .num.remove {/*Botón remover*/
-    width:66.66%;    
-}
-
-.board_console .num.note {/*Anotación posible valor*/
-    background:#95a5a6;
-    color:#ecf0f1;
-}
-
-.board_console .num.note:hover {/*La celda cambia de color al pasar el mouse por encima*/
-    background:#95a5a6;
-    color:#f1c40f;
-}
-
-.board_console .num.selected { /*Formato de la celda seleccionada*/
-    background:#f1c40f;
-    box-shadow: 0px 0px 3px 3px #bdc3c7;
-}
-
-.board_console .num.note.selected {
-    background:#f1c40f;  
-    box-shadow: 0px 0px 3px 3px #bdc3c7;
-}
-
-.board_console .num.note.selected:hover {
-  color:white;
-}
-
-.board_console .num.no:hover { /*Muestra cursor de no permitido al pasar sobre una celda fija*/
-    color:white;
-    cursor:not-allowed;
-}
-
-.board_console .num.remove:hover {/*Formato del botón de eliminar número al posarse sobre él*/
-    color:green;
-    background:#c0392b;
-}
-
-.statistics {
-    text-align:center;    
-}
-
 
 /*Configuración para responsive*/
 
