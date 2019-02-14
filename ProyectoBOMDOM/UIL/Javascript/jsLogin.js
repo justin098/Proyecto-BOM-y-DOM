@@ -23,7 +23,7 @@ function ValidarIdUsuario(e) {
     var regex = /^[0-9]+$/;
 
     if (!regex.test(teclado)) {
-        document.getElementById("lblMensaje").innerHTML = "*No se permiten letras";
+        document.getElementById("lblMensaje").innerHTML = "*No se permiten letras"; /*O espacios vacíos*/
         document.getElementById("lblMensaje").style.display = "inline";
         return false;
     } else {
