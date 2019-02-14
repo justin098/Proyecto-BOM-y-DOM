@@ -164,7 +164,7 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
 };
 
 /**
-dibujar sudoku tablero in the specified container
+Dibujar sudoku tablero en el contenedor
 */
 Sudoku.prototype.dibujarBoard = function () {
     var index = 0,
@@ -172,13 +172,10 @@ Sudoku.prototype.dibujarBoard = function () {
         group_position = { x: 0, y: 0 };
 
     var sudoku_board = $('<div></div>').addClass('sudoku_board');
-    //var sudoku_statistics = $('<div></div>')
-    //                            .addClass('statistics')
-    //.html('<b>Cells:</b> <span class="cells_complete">' + this.celdasLlenas + '/' + this.totalCeldas + '</span> <b>Time:</b> <span class="time">' + this.tiempoTranscurrido + '</span>');
 
     $('#' + this.id).empty();
 
-    //dibujar tablero 
+    //Dibujar tablero 
     for (i = 0; i < this.nn; i++) {
         for (j = 0; j < this.nn; j++) {
             position = { x: i + 1, y: j + 1 };
@@ -216,7 +213,7 @@ Sudoku.prototype.dibujarBoard = function () {
 
     sudoku_board.appendTo('#' + this.id);
 
-    //adjust size
+    //Ajustar el tamaño
     this.resizeWindow();
 };
 
@@ -225,7 +222,7 @@ Sudoku.prototype.resizeWindow = function () {
 
     var screen = { w: $(window).width(), h: $(window).height() };
 
-    //adjust the tablero
+    //Ajustar el tablero
     var b_pos = $('#' + this.id + ' .sudoku_board').offset(),
         b_dim = { w: $('#' + this.id + ' .sudoku_board').width(), h: $('#' + this.id + ' .sudoku_board').height() },
         s_dim = { w: $('#' + this.id + ' .statistics').width(), h: $('#' + this.id + ' .statistics').height() };
@@ -247,67 +244,9 @@ Sudoku.prototype.resizeWindow = function () {
     $('#' + this.id + ' .sudoku_board .cell span').css('line-height', cell_width + 'px');
     $('#' + this.id + ' .sudoku_board .cell .note').css({ 'line-height': note_with + 'px', 'width': note_with, 'height': note_with });
 
-    //adjust the console
-    var console_cell_width = $('#' + this.id + ' .matriz_console .num:first').width();
-    $('#' + this.id + ' .matriz_console .num').css('height', console_cell_width);
-    $('#' + this.id + ' .matriz_console .num').css('line-height', console_cell_width + 'px');
-
-    //adjust console
-    b_dim = { w: $('#' + this.id + ' .sudoku_board').width(), h: $('#' + this.id + ' .sudoku_board').width() };
-    b_pos = $('#' + this.id + ' .sudoku_board').offset();
-    c_dim = { w: $('#' + this.id + ' .matriz_console').width(), h: $('#' + this.id + ' .matriz_console').height() };
-
-    var c_pos_new = { left: (b_dim.w / 2 - c_dim.w / 2 + b_pos.left), top: (b_dim.h / 2 - c_dim.h / 2 + b_pos.top) };
-    $('#' + this.id + ' .matriz_console').css({ 'left': c_pos_new.left, 'top': c_pos_new.top });
-
-    //adjust the gameover container
-    var gameover_pos_new = { left: (screen.w / 20), top: (screen.w / 20 + b_pos.top) };
-
-    $('#' + this.id + ' .gameover').css({ 'left': gameover_pos_new.left, 'top': gameover_pos_new.top });
-
-    console.log('screen', screen);
-    console.timeEnd("resizeWindow");
 };
 
-/**
-Show console
-*/
-Sudoku.prototype.showConsole = function (cell) {
-    $('#' + this.id + ' .contenedor_consola').show();
-
-    var
-      t = this,
-      oldNotes = $(this.cell).find('.note');
-
-    //init
-    $('#' + t.id + ' .matriz_console .num').removeClass('selected');
-
-    //mark buttons
-    if (t.markNotes) {
-        //select markNote button  
-        $('#' + t.id + ' .matriz_console .num.note').addClass('selected');
-
-        //select buttons
-        $.each(oldNotes, function () {
-            var noteNum = $(this).text();
-            $('#' + t.id + ' .matriz_console .num:contains(' + noteNum + ')').addClass('selected');
-        });
-    }
-
-    return this;
-};
-
-/**
-Hide console
-*/
-Sudoku.prototype.hideConsole = function (cell) {
-    $('#' + this.id + ' .contenedor_consola').hide();
-    return this;
-};
-
-/**
-Select cell and prepare it for input from sudoku tablero console
-*/
+/*Seleccionar las celdas*/
 Sudoku.prototype.cellSelect = function (cell) {
     this.cell = cell;
 
@@ -319,13 +258,13 @@ Sudoku.prototype.cellSelect = function (cell) {
         group_cells = $('#' + this.id + ' .sudoku_board .cell[gr="' + group_position.x + '' + group_position.y + '"]'),
         same_value_cells = $('#' + this.id + ' .sudoku_board .cell span:contains(' + value + ')');
 
-    //remove all other selections
+    //Quitar otras selecciones
     $('#' + this.id + ' .sudoku_board .cell').removeClass('selected current group');
     $('#' + this.id + ' .sudoku_board .cell span').removeClass('samevalue');
-    //select current cell
+    //Seleccionar la celda actual
     $(cell).addClass('selected current');
 
-    //highlight select cells
+    //Resaltar la celda seleccionada
     if (this.highlight > 0) {
         horizontal_cells.addClass('selected');
         vertical_cells.addClass('selected');
@@ -384,7 +323,7 @@ Sudoku.prototype.addValue = function (value) {
     } else {
         //add value
         $(this.cell).removeClass('notvalid');
-        console.log('Value added ', value);
+        //console.log('Value added ', value);
 
         //remove all notes from current cell,  line column and group
         $(horizontal_notes).remove();
@@ -394,8 +333,8 @@ Sudoku.prototype.addValue = function (value) {
 
     //recalculate completed cells
     this.celdasLlenas = $('#' + this.id + ' .sudoku_board .cell:not(.notvalid) span:not(:empty)').length;
-    console.log('is game over? ', this.celdasLlenas, this.totalCeldas, (this.celdasLlenas === this.totalCeldas));
-    //game over
+    //console.log('is partida over? ', this.celdasLlenas, this.totalCeldas, (this.celdasLlenas === this.totalCeldas));
+    //partida over
     if (this.celdasLlenas === this.totalCeldas) {
         this.gameOver();
     }
@@ -406,57 +345,56 @@ Sudoku.prototype.addValue = function (value) {
 };
 
 
-/**
-Add note from sudoku console to selected tablero cell
-*/
-Sudoku.prototype.addNote = function (value) {
-    console.log('addNote', value);
+///**
+//Add note from sudoku console to selected tablero cell
+//*/
+//Sudoku.prototype.addNote = function (value) {
+//    console.log('addNote', value);
 
-    var
-      t = this,
-      oldNotes = $(t.cell).find('.note'),
-      note_width = Math.floor($(t.cell).width() / 2);
+//    var
+//      t = this,
+//      oldNotes = $(t.cell).find('.note'),
+//      note_width = Math.floor($(t.cell).width() / 2);
 
-    //add note to cell
-    if (oldNotes.length < 4) {
-        $('<div></div>')
-            .addClass('note')
-            .css({ 'line-height': note_width + 'px', 'height': note_width - 1, 'width': note_width - 1 })
-            .text(value)
-            .appendTo(this.cell);
-    }
+//    //add note to cell
+//    if (oldNotes.length < 4) {
+//        $('<div></div>')
+//            .addClass('note')
+//            .css({ 'line-height': note_width + 'px', 'height': note_width - 1, 'width': note_width - 1 })
+//            .text(value)
+//            .appendTo(this.cell);
+//    }
 
-    return this;
-};
+//    return this;
+//};
 
-/**
-Remove note from sudoku console to selected tablero cell
-*/
-Sudoku.prototype.eliminarNota = function (value) {
-    if (value === 0) {
-        $(this.cell).find('.note').remove();
-    } else {
-        $(this.cell).find('.note:contains(' + value + ')').remove();
-    }
+///**
+//Remove note from sudoku console to selected tablero cell
+//*/
+//Sudoku.prototype.eliminarNota = function (value) {
+//    if (value === 0) {
+//        $(this.cell).find('.note').remove();
+//    } else {
+//        $(this.cell).find('.note:contains(' + value + ')').remove();
+//    }
 
-    return this;
-};
+//    return this;
+//};
 
-/**
-End game routine
-*/
-Sudoku.prototype.gameOver = function () {
-    console.log('GAME OVER!');
-    this.status = this.END;
+///**
+//End partida routine
+//*/
+//Sudoku.prototype.gameOver = function () {
+//    console.log('GAME OVER!');
+//    this.status = this.END;
 
-    $('#' + this.id + ' .contenedor_gameover').show();
-};
+//    $('#' + this.id + ' .contenedor_gameover').show();
+//};
 
-/**
-Run a new sudoku game
+/*Empezar una nueva partida
 */
 Sudoku.prototype.run = function () {
-    this.status = this.RUNNING;
+    //this.status = this.RUNNING;
 
     var t = this;
     this.dibujarBoard();
@@ -466,63 +404,63 @@ Sudoku.prototype.run = function () {
         t.cellSelect(this);
     });
 
-    //click on console num
-    $('#' + this.id + ' .matriz_console .num').on('click', function (e) {
-        var
-            value = $.isNumeric($(this).text()) ? parseInt($(this).text()) : 0,
-            clickMarkNotes = $(this).hasClass('note'),
-            clickRemove = $(this).hasClass('remove'),
-            numSelected = $(this).hasClass('selected');
+    ////click on console num
+    //$('#' + this.id + ' .matriz_console .num').on('click', function (e) {
+    //    var
+    //        value = $.isNumeric($(this).text()) ? parseInt($(this).text()) : 0,
+    //        clickMarkNotes = $(this).hasClass('note'),
+    //        clickRemove = $(this).hasClass('remove'),
+    //        numSelected = $(this).hasClass('selected');
 
-        if (clickMarkNotes) {
-            console.log('clickMarkNotes');
-            t.markNotes = !t.markNotes;
+    //    if (clickMarkNotes) {
+    //        console.log('clickMarkNotes');
+    //        t.markNotes = !t.markNotes;
 
-            if (t.markNotes) {
-                $(this).addClass('selected');
-            } else {
-                $(this).removeClass('selected');
-                t.eliminarNota(0).showConsole();
-            }
+    //        if (t.markNotes) {
+    //            $(this).addClass('selected');
+    //        } else {
+    //            $(this).removeClass('selected');
+    //            t.eliminarNota(0).showConsole();
+    //        }
 
-        } else {
-            if (t.markNotes) {
-                if (!numSelected) {
-                    if (!value) {
-                        t.eliminarNota(0).hideConsole();
-                    } else {
-                        t.addValue(0).addNote(value).hideConsole();
-                    }
-                } else {
-                    t.eliminarNota(value).hideConsole();
-                }
-            } else {
-                t.eliminarNota(0).addValue(value).hideConsole();
-            }
-        }
-    });
+    //    } else {
+    //        if (t.markNotes) {
+    //            if (!numSelected) {
+    //                if (!value) {
+    //                    t.eliminarNota(0).hideConsole();
+    //                } else {
+    //                    t.addValue(0).addNote(value).hideConsole();
+    //                }
+    //            } else {
+    //                t.eliminarNota(value).hideConsole();
+    //            }
+    //        } else {
+    //            t.eliminarNota(0).addValue(value).hideConsole();
+    //        }
+    //    }
+    //});
 
-    //click outer console
-    $('#' + this.id + ' .contenedor_consola').on('click', function (e) {
-        if ($(e.target).is('.contenedor_consola')) {
-            $(this).hide();
-        }
-    });
+    ////click outer console
+    //$('#' + this.id + ' .contenedor_consola').on('click', function (e) {
+    //    if ($(e.target).is('.contenedor_consola')) {
+    //        $(this).hide();
+    //    }
+    //});
 
     $(window).resize(function () {
         t.resizeWindow();
     });
 };
 
-//main
+//Main
 $(function () {
     console.time("Cargando tiempo...");
 
-    //init        
+    //Inicio      
     $('head').append('<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />');
 
-    //game  
-    var game = new Sudoku({
+    //Partida  
+    var partida = new Sudoku({
         id: 'contenedor_sudoku',
         celdasFijas: 30,
         highlight: 1,
@@ -530,19 +468,19 @@ $(function () {
 
     });
 
-    game.run();
+    partida.run();
 
     $('#sidebar-toggle').on('click', function (e) {
         $('#menu_sudoku').toggleClass("open-sidebar");
     });
 
-    //restart game
-    $('#' + game.id + ' .restart').on('click', function () {
-        game.init().run();
+    //Reiniciar partida
+    $('#' + partida.id + ' .restart').on('click', function () {
+        partida.init().run();
     });
 
     $('#menu_sudoku .restart').on('click', function () {
-        game.init().run();
+        partida.init().run();
         $('#menu_sudoku').removeClass('open-sidebar');
     });
 
