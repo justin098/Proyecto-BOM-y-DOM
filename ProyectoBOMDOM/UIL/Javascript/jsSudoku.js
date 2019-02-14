@@ -1,10 +1,6 @@
 ﻿function Sudoku(params) {
     var t = this;
 
-    //this.INIT = 0;
-    //this.RUNNING = 1;
-    //this.END = 2;
-
     this.id = 'contenedor_sudoku';
     this.celdasFijas = 32;//Celdas con respuesta
     this.n = 3;//Número de columnas
@@ -16,11 +12,6 @@
 
     this.init();
 
-    //counter    
-    setInterval(function () {
-        t.timer();
-    }, 1000);
-
     return this;
 }
 
@@ -30,8 +21,8 @@ Sudoku.prototype.init = function () {
     this.tablero = [];
     this.tableroSolucion = [];
     this.cell = null;
-    //this.markNotes = 0;
-    this.tiempoTranscurrido = 0;
+    
+    //this.tiempoTranscurrido = 0;
 
     if (this.displayTitle == 0) {
         $('#titulo_sudoku').hide();
@@ -42,16 +33,7 @@ Sudoku.prototype.init = function () {
     return this;
 };
 
-//Sudoku.prototype.timer = function () {
-//    if (this.status === this.RUNNING) {
-//        this.tiempoTranscurrido++;
-//        $('.time').text('' + this.tiempoTranscurrido);
-//    }
-//};
-
-/**
-Sortea el arreglo
-*/
+/*Sortea el arreglo*/
 Sudoku.prototype.shuffle = function (arreglo) {
     var indice = arreglo.length,
         valorTemporal = 0,
@@ -77,15 +59,12 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
         j_start = 0,
         j_stop = 0;
 
-    //generate solution
-    this.tableroSolucion = [];
-
-    //shuffle matrix indexes
+    //Baraja los índices del tablero
     for (i = 0; i < this.nn; i++) {
         matrix_fields[i] = i + 1;
     }
 
-    //shuffle sudoku 'collors'
+    //Baraja los colores
     matrix_fields = this.shuffle(matrix_fields);
     for (i = 0; i < n * n; i++) {
         for (j = 0; j < n * n; j++) {
@@ -95,14 +74,14 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
         }
     }
 
-    //shuffle sudokus indexes of bands on horizontal and vertical
+    //Baraja los índices de las bandas en horizontal y vertical
     var blank_indexes = [];
     for (i = 0; i < this.n; i++) {
         blank_indexes[i] = i + 1;
     }
 
 
-    //shuffle sudokus bands horizontal
+    //Ordenar divisores horizontales
     var bands_horizontal_indexes = this.shuffle(blank_indexes);
     var matriz_solution_tmp = [];
     index = 0;
@@ -118,7 +97,7 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
     this.tableroSolucion = matriz_solution_tmp;
 
 
-    //shuffle sudokus bands vertical
+    //Ordenar divisores verticales
     var bands_vertical_indexes = this.shuffle(blank_indexes);
     matriz_solution_tmp = [];
     index = 0;
@@ -135,11 +114,11 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
     }
     this.tableroSolucion = matriz_solution_tmp;
 
-    //tablero init
+    //Inicializar tablero
     var indicesMatriz = [],
         matriz_init = [];
 
-    //shuffle tablero indexes and cut empty cells    
+    //Índices aleatorios del tablero
     for (i = 0; i < this.tableroSolucion.length; i++) {
         indicesMatriz[i] = i;
         matriz_init[i] = 0;
@@ -152,7 +131,7 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
     si se omite el final, todos los elementos después de éste se incluirán en el resultado.
     https://api.jquery.com/slice/*/
 
-    //build the init tablero    
+    //Crear tablero inicial   
     for (i = 0; i < indicesMatriz.length; i++) {
         matriz_init[indicesMatriz[i]] = this.tableroSolucion[indicesMatriz[i]];
         if (parseInt(matriz_init[indicesMatriz[i]]) > 0) {
@@ -163,9 +142,7 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
     return (this.displaySolutionOnly) ? this.tableroSolucion : matriz_init;
 };
 
-/**
-Dibujar sudoku tablero en el contenedor
-*/
+/*Dibujar tablero en el contenedor*/
 Sudoku.prototype.dibujarBoard = function () {
     var index = 0,
         position = { x: 0, y: 0 },
@@ -282,170 +259,16 @@ Sudoku.prototype.cellSelect = function (cell) {
     }
 };
 
-/**
-Add value from sudoku console to selected tablero cell
-*/
-Sudoku.prototype.addValue = function (value) {
-    console.log('prepare for addValue', value);
-
-    var
-        position = { x: $(this.cell).attr('x'), y: $(this.cell).attr('y') },
-        group_position = { x: Math.floor((position.x - 1) / 3), y: Math.floor((position.y - 1) / 3) },
-
-        horizontal_cells = '#' + this.id + ' .sudoku_board .cell[x="' + position.x + '"]',
-        vertical_cells = '#' + this.id + ' .sudoku_board .cell[y="' + position.y + '"]',
-        group_cells = '#' + this.id + ' .sudoku_board .cell[gr="' + group_position.x + '' + group_position.y + '"]',
-
-        horizontal_cells_exists = $(horizontal_cells + ' span:contains(' + value + ')'),
-        vertical_cells_exists = $(vertical_cells + ' span:contains(' + value + ')'),
-        group_cells_exists = $(group_cells + ' span:contains(' + value + ')'),
-
-        horizontal_notes = horizontal_cells + ' .note:contains(' + value + ')',
-        vertical_notes = vertical_cells + ' .note:contains(' + value + ')',
-        group_notes = group_cells + ' .note:contains(' + value + ')',
-
-        old_value = parseInt($(this.cell).not('.notvalid').text()) || 0;
-
-
-    if ($(this.cell).hasClass('fija')) {
-        return;
-    }
-
-    //delete value or write it in cell
-    $(this.cell).find('span').text((value === 0) ? '' : value);
-
-    if (this.cell !== null && (horizontal_cells_exists.length || vertical_cells_exists.length || group_cells_exists.length)) {
-        if (old_value !== value) {
-            $(this.cell).addClass('notvalid');
-        } else {
-            $(this.cell).find('span').text('');
-        }
-    } else {
-        //add value
-        $(this.cell).removeClass('notvalid');
-        //console.log('Value added ', value);
-
-        //remove all notes from current cell,  line column and group
-        $(horizontal_notes).remove();
-        $(vertical_notes).remove();
-        $(group_notes).remove();
-    }
-
-    //recalculate completed cells
-    this.celdasLlenas = $('#' + this.id + ' .sudoku_board .cell:not(.notvalid) span:not(:empty)').length;
-    //console.log('is partida over? ', this.celdasLlenas, this.totalCeldas, (this.celdasLlenas === this.totalCeldas));
-    //partida over
-    if (this.celdasLlenas === this.totalCeldas) {
-        this.gameOver();
-    }
-
-    $('#' + this.id + ' .statistics .cells_complete').text('' + this.celdasLlenas + '/' + this.totalCeldas);
-
-    return this;
-};
-
-
-///**
-//Add note from sudoku console to selected tablero cell
-//*/
-//Sudoku.prototype.addNote = function (value) {
-//    console.log('addNote', value);
-
-//    var
-//      t = this,
-//      oldNotes = $(t.cell).find('.note'),
-//      note_width = Math.floor($(t.cell).width() / 2);
-
-//    //add note to cell
-//    if (oldNotes.length < 4) {
-//        $('<div></div>')
-//            .addClass('note')
-//            .css({ 'line-height': note_width + 'px', 'height': note_width - 1, 'width': note_width - 1 })
-//            .text(value)
-//            .appendTo(this.cell);
-//    }
-
-//    return this;
-//};
-
-///**
-//Remove note from sudoku console to selected tablero cell
-//*/
-//Sudoku.prototype.eliminarNota = function (value) {
-//    if (value === 0) {
-//        $(this.cell).find('.note').remove();
-//    } else {
-//        $(this.cell).find('.note:contains(' + value + ')').remove();
-//    }
-
-//    return this;
-//};
-
-///**
-//End partida routine
-//*/
-//Sudoku.prototype.gameOver = function () {
-//    console.log('GAME OVER!');
-//    this.status = this.END;
-
-//    $('#' + this.id + ' .contenedor_gameover').show();
-//};
-
-/*Empezar una nueva partida
-*/
+/*Empezar una nueva partida*/
 Sudoku.prototype.run = function () {
-    //this.status = this.RUNNING;
 
     var t = this;
     this.dibujarBoard();
 
-    //click on tablero cell
+    //Click en celda
     $('#' + this.id + ' .sudoku_board .cell').on('click', function (e) {
         t.cellSelect(this);
     });
-
-    ////click on console num
-    //$('#' + this.id + ' .matriz_console .num').on('click', function (e) {
-    //    var
-    //        value = $.isNumeric($(this).text()) ? parseInt($(this).text()) : 0,
-    //        clickMarkNotes = $(this).hasClass('note'),
-    //        clickRemove = $(this).hasClass('remove'),
-    //        numSelected = $(this).hasClass('selected');
-
-    //    if (clickMarkNotes) {
-    //        console.log('clickMarkNotes');
-    //        t.markNotes = !t.markNotes;
-
-    //        if (t.markNotes) {
-    //            $(this).addClass('selected');
-    //        } else {
-    //            $(this).removeClass('selected');
-    //            t.eliminarNota(0).showConsole();
-    //        }
-
-    //    } else {
-    //        if (t.markNotes) {
-    //            if (!numSelected) {
-    //                if (!value) {
-    //                    t.eliminarNota(0).hideConsole();
-    //                } else {
-    //                    t.addValue(0).addNote(value).hideConsole();
-    //                }
-    //            } else {
-    //                t.eliminarNota(value).hideConsole();
-    //            }
-    //        } else {
-    //            t.eliminarNota(0).addValue(value).hideConsole();
-    //        }
-    //    }
-    //});
-
-    ////click outer console
-    //$('#' + this.id + ' .contenedor_consola').on('click', function (e) {
-    //    if ($(e.target).is('.contenedor_consola')) {
-    //        $(this).hide();
-    //    }
-    //});
 
     $(window).resize(function () {
         t.resizeWindow();
