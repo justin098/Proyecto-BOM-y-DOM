@@ -1,34 +1,19 @@
 ﻿function Sudoku(params) {
-    var t = this;
-
     this.id = 'contenedor_sudoku';
-    this.celdasFijas = 32;//Celdas con respuesta
-    this.n = 3;//Número de columnas
-    this.nn = this.n * this.n;//Número de celdas por lado
-    this.totalCeldas = this.nn * this.nn; 
-
-    if (this.celdasFijas < 10) this.celdasFijas = 10;
-    if (this.celdasFijas > 70) this.celdasFijas = 70;
-
-    this.init();
+   
+    this.iniciar();
 
     return this;
 }
 
-Sudoku.prototype.init = function () {
-    this.status = this.INIT;
+Sudoku.prototype.iniciar = function () {
+    this.status = this.iniciar;
     this.celdasLlenas = 0;
     this.tablero = [];
     this.tableroSolucion = [];
-    this.cell = null;
-    
-    //this.tiempoTranscurrido = 0;
+    this.cell = null;   
 
-    if (this.displayTitle == 0) {
-        $('#titulo_sudoku').hide();
-    }
-
-    this.tablero = this.constructorTablero(this.n, this.celdasFijas);
+    this.tablero = this.constructorTablero();
 
     return this;
 };
@@ -51,7 +36,7 @@ Sudoku.prototype.shuffle = function (arreglo) {
 };
 
 /*Genera la tabla del sudoku*/
-Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
+Sudoku.prototype.constructorTablero = function () {
     var matrix_fields = [],
         index = 0,
         i = 0,
@@ -60,15 +45,15 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
         j_stop = 0;
 
     //Baraja los índices del tablero
-    for (i = 0; i < this.nn; i++) {
+    for (i = 0; i < 9; i++) {
         matrix_fields[i] = i + 1;
     }
 
     //Baraja los colores
     matrix_fields = this.shuffle(matrix_fields);
-    for (i = 0; i < n * n; i++) {
-        for (j = 0; j < n * n; j++) {
-            var value = Math.floor((i * n + i / n + j) % (n * n) + 1);
+    for (i = 0; i < 9; i++) {
+        for (j = 0; j < 9; j++) {
+            var value = Math.floor((i * 3 + i / 3 + j) % (9) + 1);
             this.tableroSolucion[index] = value;
             index++;
         }
@@ -76,7 +61,7 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
 
     //Baraja los índices de las bandas en horizontal y vertical
     var blank_indexes = [];
-    for (i = 0; i < this.n; i++) {
+    for (i = 0; i < 3; i++) {
         blank_indexes[i] = i + 1;
     }
 
@@ -86,8 +71,8 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
     var matriz_solution_tmp = [];
     index = 0;
     for (i = 0; i < bands_horizontal_indexes.length; i++) {
-        j_start = (bands_horizontal_indexes[i] - 1) * this.n * this.nn;
-        j_stop = bands_horizontal_indexes[i] * this.n * this.nn;
+        j_start = (bands_horizontal_indexes[i] - 1) * 27;
+        j_stop = bands_horizontal_indexes[i] * 27;
 
         for (j = j_start; j < j_stop; j++) {
             matriz_solution_tmp[index] = this.tableroSolucion[j];
@@ -101,13 +86,13 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
     var bands_vertical_indexes = this.shuffle(blank_indexes);
     matriz_solution_tmp = [];
     index = 0;
-    for (k = 0; k < this.nn; k++) {
-        for (i = 0; i < this.n; i++) {
-            j_start = (bands_vertical_indexes[i] - 1) * this.n;
-            j_stop = bands_vertical_indexes[i] * this.n;
+    for (k = 0; k < 9; k++) {
+        for (i = 0; i < 3; i++) {
+            j_start = (bands_vertical_indexes[i] - 1) * 3;
+            j_stop = bands_vertical_indexes[i] * 3;
 
             for (j = j_start; j < j_stop; j++) {
-                matriz_solution_tmp[index] = this.tableroSolucion[j + (k * this.nn)];
+                matriz_solution_tmp[index] = this.tableroSolucion[j + (k * 9)];
                 index++;
             }
         }
@@ -116,16 +101,16 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
 
     //Inicializar tablero
     var indicesMatriz = [],
-        matriz_init = [];
+        matriz_iniciar = [];
 
     //Índices aleatorios del tablero
     for (i = 0; i < this.tableroSolucion.length; i++) {
         indicesMatriz[i] = i;
-        matriz_init[i] = 0;
+        matriz_iniciar[i] = 0;
     }
 
     indicesMatriz = this.shuffle(indicesMatriz);
-    indicesMatriz = indicesMatriz.slice(0, this.celdasFijas);/*Dado un objeto jQuery que representa un conjunto de elementos DOM, 
+    indicesMatriz = indicesMatriz.slice(0, 32);/*Dado un objeto jQuery que representa un conjunto de elementos DOM, 
     el método .slice () construye un nuevo objeto jQuery que contiene un subconjunto de los elementos especificados por el inicio y,
     opcionalmente, el argumento final. El índice de inicio suministrado identifica la posición de uno de los elementos en el conjunto;
     si se omite el final, todos los elementos después de éste se incluirán en el resultado.
@@ -133,13 +118,13 @@ Sudoku.prototype.constructorTablero = function (n, celdasFijas) {
 
     //Crear tablero inicial   
     for (i = 0; i < indicesMatriz.length; i++) {
-        matriz_init[indicesMatriz[i]] = this.tableroSolucion[indicesMatriz[i]];
-        if (parseInt(matriz_init[indicesMatriz[i]]) > 0) {
+        matriz_iniciar[indicesMatriz[i]] = this.tableroSolucion[indicesMatriz[i]];
+        if (parseInt(matriz_iniciar[indicesMatriz[i]]) > 0) {
             this.celdasLlenas++;
         }
     }
 
-    return (this.displaySolutionOnly) ? this.tableroSolucion : matriz_init;
+    return (this.displaySolutionOnly) ? this.tableroSolucion : matriz_iniciar;
 };
 
 /*Dibujar tablero en el contenedor*/
@@ -153,10 +138,10 @@ Sudoku.prototype.dibujarBoard = function () {
     $('#' + this.id).empty();
 
     //Dibujar tablero 
-    for (i = 0; i < this.nn; i++) {
-        for (j = 0; j < this.nn; j++) {
+    for (i = 0; i < 9; i++) {
+        for (j = 0; j < 9; j++) {
             position = { x: i + 1, y: j + 1 };
-            group_position = { x: Math.floor((position.x - 1) / this.n), y: Math.floor((position.y - 1) / this.n) };
+            group_position = { x: Math.floor((position.x - 1) / 3), y: Math.floor((position.y - 1) / 3) };
 
             var value = (this.tablero[index] > 0 ? this.tablero[index] : ''),
                 value_solution = (this.tableroSolucion[index] > 0 ? this.tableroSolucion[index] : ''),
@@ -175,11 +160,11 @@ Sudoku.prototype.dibujarBoard = function () {
                 cell.addClass('fija');
             }
 
-            if (position.x % this.n === 0 && position.x != this.nn) {
+            if (position.x % 3 === 0 && position.x != 9) {
                 cell.addClass('border_h');
             }
 
-            if (position.y % this.n === 0 && position.y != this.nn) {
+            if (position.y % 3 === 0 && position.y != 9) {
                 cell.addClass('border_v');
             }
 
@@ -222,7 +207,7 @@ Sudoku.prototype.resizeWindow = function () {
 
 };
 
-/*Seleccionar las celdas*/
+/*Prototipo de la función para seleccionar las celdas*/
 Sudoku.prototype.cellSelect = function (cell) {
     this.cell = cell;
 
@@ -234,9 +219,6 @@ Sudoku.prototype.cellSelect = function (cell) {
         group_cells = $('#' + this.id + ' .sudoku_board .cell[gr="' + group_position.x + '' + group_position.y + '"]'),
         same_value_cells = $('#' + this.id + ' .sudoku_board .cell span:contains(' + value + ')');
 
-    //Quitar otras selecciones
-    $('#' + this.id + ' .sudoku_board .cell').removeClass('selected current group');
-    $('#' + this.id + ' .sudoku_board .cell span').removeClass('samevalue');
     //Seleccionar la celda actual
     $(cell).addClass('selected current');
 
@@ -252,11 +234,11 @@ Sudoku.prototype.cellSelect = function (cell) {
         $('#' + this.id + ' .matriz_console .num').addClass('no');
     } else {
         $('#' + this.id + ' .matriz_console .num').removeClass('no');
-
-        this.showConsole();
+        
         this.resizeWindow();
     }
 };
+
 
 /*Empezar una nueva partida*/
 Sudoku.prototype.run = function () {
@@ -269,6 +251,19 @@ Sudoku.prototype.run = function () {
         t.cellSelect(this);
     });
 
+    //Al presionar una tecla
+    $('body').keypress(function (e) {                
+        var cell = $('.current');
+        if (cell.hasClass('fija')) {
+            alert('Celda fija');
+        } else {
+            if ((e.keyCode || e.which) >= 49 && (e.keyCode || e.which) <= 57) { //Solo permite valores del 1 al 9
+                cell.find('span').text("" + String.fromCharCode(e.keyCode || e.which));//Convierte el código Ascii a su respectivo caracter y lo inserta en la celda
+            }
+        }
+        
+    });   
+
     $(window).resize(function () {
         t.resizeWindow();
     });
@@ -278,7 +273,7 @@ Sudoku.prototype.run = function () {
 $(function () {
 
     //Inicio      
-    $('head').append('<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />');
+    $('head').append('<meta name="viewport" content="iniciarial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />');
 
     //Partida  
     var partida = new Sudoku({
@@ -297,11 +292,12 @@ $(function () {
 
     //Reiniciar partida
     $('#' + partida.id + ' .restart').on('click', function () {
-        partida.init().run();
+        partida.iniciar().run();
     });
 
     $('#menu_sudoku .restart').on('click', function () {
-        partida.init().run();
+        partida.iniciar().run();
         $('#menu_sudoku').removeClass('open-sidebar');
     });
+
 });

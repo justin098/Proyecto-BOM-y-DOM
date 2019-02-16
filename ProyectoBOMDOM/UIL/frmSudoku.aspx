@@ -16,7 +16,12 @@
 <script type="text/javascript" src="Javascript/jsSudoku.js"></script> <%--Importación del script JS--%>
 <body>
     <form id="form1" runat="server">
-       
+        <div id="titulo">
+
+<h1>SUDOKU</h1></div>
+
+        
+
         <div id="contenedor_sudoku"></div> <%--Div contenedor del sudoku--%>
     </form>
 </body>
