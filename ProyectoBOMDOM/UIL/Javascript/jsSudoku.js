@@ -219,6 +219,9 @@ Sudoku.prototype.cellSelect = function (cell) {
         group_cells = $('#' + this.id + ' .sudoku_board .cell[gr="' + group_position.x + '' + group_position.y + '"]'),
         same_value_cells = $('#' + this.id + ' .sudoku_board .cell span:contains(' + value + ')');
 
+    //Quitar otras selecciones
+    $('#' + this.id + ' .sudoku_board .cell').removeClass('selected current group');
+    $('#' + this.id + ' .sudoku_board .cell span').removeClass('samevalue');
     //Seleccionar la celda actual
     $(cell).addClass('selected current');
 
