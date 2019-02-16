@@ -8,5 +8,6 @@ namespace BLL
 {
     public class BusinessLogic
     {
+        int prueba;
     }
 }
